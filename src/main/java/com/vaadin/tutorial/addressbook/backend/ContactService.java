@@ -34,16 +34,27 @@ public class ContactService {
 
             Random r = new Random(0);
             Calendar cal = Calendar.getInstance();
+            Calendar c2 = Calendar.getInstance();
             for (int i = 0; i < 100; i++) {
                 Contact contact = new Contact();
                 contact.setFirstName(fnames[r.nextInt(fnames.length)]);
                 contact.setLastName(lnames[r.nextInt(fnames.length)]);
-                contact.setEmail(contact.getFirstName().toLowerCase() + "@"
-                        + contact.getLastName().toLowerCase() + ".com");
-                contact.setPhone("+ 358 555 " + (100 + r.nextInt(900)));
+                contact.setTask(contact.getFirstName().toLowerCase() + " "
+                        + contact.getLastName().toLowerCase() + "'s task");
+                
                 cal.set(1930 + r.nextInt(70),
                         r.nextInt(11), r.nextInt(28));
-                contact.setBirthDate(cal.getTime());
+                c2.set(1930 + r.nextInt(70),
+                        r.nextInt(11), r.nextInt(28));
+                if(cal.getTime().compareTo(c2.getTime())<0)
+                {
+                	contact.setStartDate(cal.getTime());
+                	contact.setEndDate(c2.getTime());
+                }else
+                {
+                	contact.setStartDate(c2.getTime());
+                	contact.setEndDate(cal.getTime());
+                }
                 contactService.save(contact);
             }
             instance = contactService;
